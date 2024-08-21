@@ -1,8 +1,16 @@
+import { useReducer } from 'react';
 import './App.css';
 import { Canvas } from './components/Canvas';
 import { useCanvas } from './hooks/useCanvas';
 
+const initialState = {score:0}
+type Action = {type:"setScore()",payload:typeof initialState};
 function App() {
+  const [state,dispatch] = useReducer(
+    (currentState:typeof initialState,action:Action)=>{
+      return currentState
+    },initialState,
+  );
   const draw = (ctx:CanvasRenderingContext2D,count:any) => {
     ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
     ctx.fillStyle = 'grey';
@@ -12,7 +20,10 @@ function App() {
   const canvasEl = useCanvas(draw);
 
   return (
-    <Canvas canvasEl={canvasEl}></Canvas>
+    <>
+      <h1>{state.score}</h1>
+      <Canvas canvasEl={canvasEl}></Canvas>
+    </>
   )
 }
 export default App;
