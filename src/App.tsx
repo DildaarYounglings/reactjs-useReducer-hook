@@ -8,7 +8,16 @@ type Action = {type:"setScore()",payload:typeof initialState};
 function App() {
   const [state,dispatch] = useReducer(
     (currentState:typeof initialState,action:Action)=>{
-      return currentState
+      let copyState = {...currentState};
+      switch(action.type){
+        case "setScore()":{
+          copyState.score = action.payload.score
+          return copyState
+        }
+        default:{
+          return currentState
+        }
+      }
     },initialState,
   );
   const draw = (ctx:CanvasRenderingContext2D,count:any) => {
