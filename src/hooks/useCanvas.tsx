@@ -1,8 +1,8 @@
 import React,{useEffect,useRef} from "react";
+import { Game } from "../typescriptClasses/Game";
 
-export function useCanvas(draw:(ctx:CanvasRenderingContext2D,count:any)=>void){
+export function useCanvas(draw:(game:Game)=>void,game:Game){
     const Ref = useRef<HTMLCanvasElement|null>(null);
-    let canvas:HTMLCanvasElement;
 
     useEffect(() => {
         const canvasEl = Ref.current;
@@ -10,13 +10,11 @@ export function useCanvas(draw:(ctx:CanvasRenderingContext2D,count:any)=>void){
         canvasEl;
         const Ctx = canvasEl.getContext("2d");
         if(Ctx === null) throw new Error("Ctx variable is null Line10 in Canvas.tsx");
-        Ctx;
-        let count = 0;
+        const newGame = new Game(Ctx);
         let animationId:number;
         const renderer = () => {
-          count++;
-          draw(Ctx,count);
           animationId = window.requestAnimationFrame(renderer);
+          draw(newGame);
         }
         renderer();
         return () => {
