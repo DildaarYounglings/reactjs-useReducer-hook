@@ -1,9 +1,10 @@
 import './App.css';
 import { Canvas } from './components/Canvas';
-import { GameState, useCanvas } from './hooks/useCanvas';
+import {useCanvas } from './hooks/useCanvas';
+import { Game } from './typescriptClasses/Game';
 
 function App() {
-  const draw = (game:GameState) => {
+  const draw = (game:Game) => {
     game;
   }
   const {canvasRef,game,setGame} = useCanvas(draw);

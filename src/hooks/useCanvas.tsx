@@ -1,31 +1,23 @@
 import {useEffect,useReducer,useRef} from "react";
-import { Game } from "../typescriptClasses/Game";
+import {Game,GameBuilder} from "../typescriptClasses/Game";
+import { Player, PlayerBuilder } from "../typescriptClasses/Player";
 
-const initialGameState = {...new Game(null)};
-export type GameState = typeof initialGameState;
-export type GameStateAction = {type:string,payload:GameState}
-export function useCanvas(draw:(game:GameState)=>void){
-  const [game,setGame] = useReducer(
-    (currentState:GameState,action:GameStateAction)=>{
-      let copyState = {...currentState};
-      switch(action.type){
-        case "setGame()":{
-          return {...copyState,...action.payload}
-        }
-        default:{
-          return currentState;
-        }
-      }
-    },initialGameState);
+export function useCanvas(draw:(game:Game)=>void){
   const canvasRef = useRef<HTMLCanvasElement|null>(null);
-
+  const [game,setGame] = useReducer((prev:Game,next:Game)=>{prev;return next.clone();},new GameBuilder().build());
+  const setPlayer = (player:Player) => {
+    setGame(new GameBuilder().setPlayer(player).build());
+  }
     useEffect(() => {
         const canvasEl = canvasRef.current;
-        if(canvasEl === null)throw new Error("canvas Element is null Line07 in Canvas.tsx");
-        canvasEl;
-        const Ctx = canvasEl.getContext("2d");
+        if(canvasEl === null)throw new Error("canvas Element is null Line13 in Canvas.tsx");
+        canvasEl;const Ctx = canvasEl.getContext("2d");
         if(Ctx === null) throw new Error("Ctx variable is null Line10 in Canvas.tsx");
-        setGame({})
+        setGame(
+          new GameBuilder().setCtx(
+            Ctx
+          ).build()
+        );
         let animationId:number;
         const renderer = () => {
           animationId = window.requestAnimationFrame(renderer);
@@ -36,5 +28,5 @@ export function useCanvas(draw:(game:GameState)=>void){
           window.cancelAnimationFrame(animationId);
         };
     },[draw]);
-  return {canvasRef,game,setGame};
+  return {canvasRef,game,setGame,setPlayer};
 }
