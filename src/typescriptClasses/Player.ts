@@ -8,12 +8,15 @@ export class Player {
         this.width = player.width;
         this.height = player.height;
     }
+    draw(ctx:CanvasRenderingContext2D) {
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(this.posX, this.posY, this.width, this.height);
+    }
 }
 export class PlayerBuilder{
     posX:number=0;posY:number=0;
     velocity_X:number=0;velocity_Y:number=0;
     width:number=0;height:number=0;
-    constructor(){}
     build(){
         return new Player(this);
     }
@@ -27,3 +30,4 @@ export class PlayerBuilder{
         return this;
     }
 }
+export const playerBuilder = new PlayerBuilder();

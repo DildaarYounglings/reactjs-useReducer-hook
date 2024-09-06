@@ -12,6 +12,9 @@ export class Boundary {
     draw(ctx:CanvasRenderingContext2D){
         ctx.fillRect(this.posX,this.posY,this.height,this.width);
     }
+    clone(){
+        return boundaryBuilder.setPosition(this.posX,this.posY).setSize(this.width,this.height).build();
+    }
 }
 
 export class BoundaryBuilder {
@@ -22,7 +25,7 @@ export class BoundaryBuilder {
     posY:number = 0;
     posX:number = 0;
 
-    public setSize(width:number,height:number): BoundaryBuilder {
+    public setSize(width:number,height:number):BoundaryBuilder{
         this.width = width;this.height=height;
         return this;
     }
@@ -35,4 +38,4 @@ export class BoundaryBuilder {
         return new Boundary(this);
     }
 }
-export const bounderyBuilder = new BoundaryBuilder();
+export const boundaryBuilder = new BoundaryBuilder();

@@ -1,14 +1,18 @@
 import './App.css';
 import { Canvas } from './components/Canvas';
 import {useCanvas } from './hooks/useCanvas';
-import { Game } from './typescriptClasses/Game';
+import { Game, gameBuilder } from './typescriptClasses/Game';
+import { Player } from './typescriptClasses/Player';
 
 function App() {
   const draw = (game:Game) => {
-    game;
+    game.draw();
   }
   const {canvasRef,game,setGame} = useCanvas(draw);
   game;setGame;
+  const setPlayer = (player:Player) => {
+    setGame(gameBuilder.setPlayer(player).build());
+  }
 
   return (
     <>

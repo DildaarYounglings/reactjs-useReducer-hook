@@ -1,37 +1,39 @@
 import { Level } from "./Level.ts";
-import {Player, PlayerBuilder} from "./Player.ts"
+import { Player, PlayerBuilder } from "./Player.ts"
 export class Game {
-    ctx:CanvasRenderingContext2D
-    player:Player = new PlayerBuilder().build();
-    levels:Level[] = []
-    constructor(game:GameBuilder)
-    {
-        if(game.ctx === null) throw new Error("ctx cannot be null");
-        this.ctx = game.ctx;this.levels = game.levels;this.player = game.player;
+    ctx: CanvasRenderingContext2D;player:Player = new PlayerBuilder().build();levels: Level[] = []
+    constructor(game: GameBuilder) {
+        if (game.ctx === null) throw new Error("ctx cannot be null");
+        this.ctx = game.ctx; this.levels = game.levels; this.player = game.player;
     }
-    clone():Game{
+    draw() {
+        this.player.draw(this.ctx);
+        this.levels.forEach(level => level.draw(this.ctx));
+    }
+    clone(): Game {
         return new GameBuilder().setCtx(this.ctx).setLevels(this.levels).setPlayer(this.player).build();
     }
 }
 export class GameBuilder {
-    ctx:CanvasRenderingContext2D|null = null;player:Player = new PlayerBuilder().build();
-    levels:Level[] = [];
-    
-    setCtx(ctx:CanvasRenderingContext2D):GameBuilder{
-        if(ctx === null)throw Error("ctx is null")
+    ctx: CanvasRenderingContext2D | null = null; player: Player = new PlayerBuilder().build();
+    levels: Level[] = [];
+
+    setCtx(ctx: CanvasRenderingContext2D): GameBuilder {
+        if (ctx === null) throw Error("ctx is null")
         this.ctx = ctx;
         return this;
     }
-    public setPlayer(player:Player): GameBuilder {
+    public setPlayer(player: Player): GameBuilder {
         this.player = player;
         return this;
     }
-    public setLevels(levels:Level[]): GameBuilder {
+    public setLevels(levels: Level[]): GameBuilder {
         this.levels = levels;
         return this;
     }
-    
+
     public build(): Game {
         return new Game(this);
     }
 }
+export const gameBuilder = new GameBuilder();
